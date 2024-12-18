@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { useUsers } from "@/hooks/useUsers";
 import { User } from "@prisma/client";
 import { MenuIcon } from "@/components/styled";
-import { Box } from "@mui/material";
 
 export default function Page() {
   const router = useRouter();

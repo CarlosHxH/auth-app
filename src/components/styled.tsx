@@ -3,6 +3,17 @@ import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Stack from "@mui/material/Stack";
+import FormControl from "@mui/material/FormControl";
+import Label from "@mui/icons-material/Label";
+import { HelperText, StyledInput } from "@/components/CustomStyled";
+
+export const Input = ({label,placeholder}:{label:string,placeholder:string}) => (
+  <FormControl defaultValue={""} required>
+    <Label>{label}</Label>
+    <StyledInput placeholder={placeholder} />
+    <HelperText />
+  </FormControl>
+);
 
 export const MyStack = ({text}:{text:string[]}) => (
   <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap sx={{ flexWrap: "wrap" }}>
