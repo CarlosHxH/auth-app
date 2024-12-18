@@ -6,6 +6,7 @@ import { HelperText, StyledInput } from "@/components/CustomStyled";
 import { Container } from "@mui/material";
 
 export default function Page() {
+
   const Input = ({label,placeholder}:{label:string,placeholder:string}) => (
     <FormControl defaultValue={""} required>
       <Label>{label}</Label>

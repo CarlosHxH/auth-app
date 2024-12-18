@@ -1,35 +1,36 @@
 "use client";
 import * as React from "react";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import DrawerAppBar from "@/components/DrawerAppBar";
-import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-
+import { useUsers } from "@/hooks/useUsers";
+import { User } from "@prisma/client";
+import { MenuIcon } from "@/components/styled";
+import { Box } from "@mui/material";
 
 export default function Page() {
-  const router = useRouter()
+  const router = useRouter();
+  const { users, isLoading, isError } = useUsers();
+
+  if (isLoading) return <div>Carregando...</div>;
+  if (isError) return <div>Erro ao carregar</div>;
+
   return (
-    <DrawerAppBar fab={() => router.push('/create')}>
+    <DrawerAppBar fab={() => router.push("/create")}>
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {Array.from({ length: 100 }, (_, i) => i + 1).map((i) => (
-          <ListItem
-            key={i}
-            secondaryAction={
-              <IconButton aria-label="comment">
-                <MoreIcon />
-              </IconButton>
-            }
-          >
-            <Box>
-              <Typography>Teste</Typography>
-              <ListItemText primary={`Fulano da silva ${i}`} />
-            </Box>
-          </ListItem>
-        ))}
+        {users &&
+          users.map((user: User, i: React.Key) => (
+            <ListItem key={i}secondaryAction={<MenuIcon/>}>
+              <ListItemText primary={"DAS0184"} secondary={
+                <React.Fragment>
+                  <ListItemText primary="Jan 7, 2014" secondary="" />
+                </React.Fragment>
+              }/>
+              <ListItemText primary="Data" secondary={""} />
+            </ListItem>
+          ))}
       </List>
     </DrawerAppBar>
   );
