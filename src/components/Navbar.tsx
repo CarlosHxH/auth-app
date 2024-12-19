@@ -27,8 +27,8 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   return (
-    <React.Fragment>
-      <AppBar position="sticky">
+    <Box sx={{ display: "flex", overflowY: "hidden" }}>
+      <AppBar component="nav">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <LocalShippingIcon
@@ -124,7 +124,7 @@ function ResponsiveAppBar() {
           </Toolbar>
         </Container>
       </AppBar>
-    </React.Fragment>
+    </Box>
   );
 }
 export default ResponsiveAppBar;

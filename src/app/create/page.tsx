@@ -1,14 +1,15 @@
-"use client"
-import React from 'react';
-import Form from './Form';
-import { Container } from '@mui/material';
+import { Box, Toolbar } from '@mui/material';
+import FormComponent from './Form';
+import ResponsiveAppBar from '@/components/ResponsiveAppBar';
 
-const Home: React.FC = () => {
+export default function InspectionPage() {
   return (
-    <Container maxWidth="sm">
-      <Form />
-    </Container>
+    <div>
+      <ResponsiveAppBar title={"5sTransportes"} showBackButton/>
+      <Box component="main" sx={{ flex: 1 }}>
+        <Toolbar />
+        <FormComponent />
+      </Box>
+    </div>
   );
-};
-
-export default Home;
+}

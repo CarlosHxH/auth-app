@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,11 +16,12 @@ import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import LogoutButton from "@/components/LogoutButton";
+import Link from "next/link";
 
 interface Props {
   window?: () => Window;
   children: React.ReactNode,
-  fab: React.MouseEventHandler
+  fab: string | null | undefined
 }
 
 const title = "5sTransportes";
@@ -57,8 +57,7 @@ export default function DrawerAppBar(props: Props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex", overflowY: "hidden" }}>
@@ -90,8 +89,7 @@ export default function DrawerAppBar(props: Props) {
         {children}
       </Box>
 
-    
-      <Fab sx={{ position: "fixed", bottom: 20, right: 30 }} color="primary" onClick={fab}>
+      <Fab as={Link} href={fab} sx={{ position: "fixed", bottom: 20, right: 30 }} color="primary">
         <AddIcon />
       </Fab>
     </Box>

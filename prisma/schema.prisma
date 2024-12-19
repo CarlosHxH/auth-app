@@ -18,6 +18,7 @@ model User {
   // Optional: Keep OAuth account linkage
   accounts  Account[]
   sessions  Session[]
+  inspecao  Inspecao[]
 }
 
 model Account {
@@ -56,9 +57,9 @@ model VerificationToken {
 }
 
 
-model InspecaoVeiculo {
+model Inspecao {
   id                            String   @id @default(cuid())
-  nomeCompleto                  String
+  userId                        String
   placa                         String
   modelo                        String
   crlvEmDia                     Boolean
@@ -84,4 +85,5 @@ model InspecaoVeiculo {
   motivoParteEletricaRuim       String
   fotosParteEletricaRuim        String
   sugestao                      String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
