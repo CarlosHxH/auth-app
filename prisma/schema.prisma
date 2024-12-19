@@ -54,3 +54,34 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+
+model InspecaoVeiculo {
+  id                            String   @id @default(cuid())
+  nomeCompleto                  String
+  placa                         String
+  modelo                        String
+  crlvEmDia                     Boolean
+  fotoCRLV                      String
+  certificadoTacografoEmDia     Boolean
+  fotoTacografo                 String
+  nivelAgua                     String
+  fotoNivelAgua                 String
+  nivelOleo                     String
+  situacaoPneus                 String
+  fotosPneusBom                 String
+  motivoPneuRuim                String
+  fotosPneusRuim                String
+  pneuFurado                    String
+  fotoPneuFurado                String
+  avariasCabine                 Boolean
+  descricaoAvariasCabine        String
+  fotosAvariasCabine            String
+  bauPossuiAvarias              Boolean
+  descricaoAvariasBau           String
+  fotosAvariasBau               String
+  funcionamentoParteEletrica    Boolean
+  motivoParteEletricaRuim       String
+  fotosParteEletricaRuim        String
+  sugestao                      String
+}

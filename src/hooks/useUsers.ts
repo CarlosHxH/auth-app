@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { User } from '@prisma/client'
 
-const fetcher = (url: string) => fetch(url).then(r => r.json())
+export const fetcher = (url: string) => fetch(url).then(r => r.json())
 
 export function useUsers() {
   const { data, error, mutate } = useSWR<User[]>('/api/users', fetcher)

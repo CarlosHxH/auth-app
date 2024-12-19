@@ -44,10 +44,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error('User already exists')
           }
 
-          const user = await createUser(
-            credentials.email, 
-            credentials.password
-          )
+          const user = await createUser( credentials.email, credentials.password)
 
           return {
             id: user.id,

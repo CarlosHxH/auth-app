@@ -16,6 +16,7 @@ export default function Home() {
     redirect("/api/auth/signin");
   }
 
+
   return (
     <div>
       <Navbar />

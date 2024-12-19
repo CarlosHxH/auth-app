@@ -40,7 +40,7 @@ interface Option {
       {groupedOptions.length > 0 && (
         <Listbox {...getListboxProps()} sx={{zIndex:999}}>
           {(groupedOptions).map((option, i:number) => (
-            <Option key={i} {...getOptionProps({ option, i })}>{option.label}</Option>
+            <Option {...getOptionProps({ option, i })}>{option.label}</Option>
           ))}
         </Listbox>
       )}
