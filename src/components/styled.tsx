@@ -7,6 +7,10 @@ import FormControl from "@mui/material/FormControl";
 import Label from "@mui/icons-material/Label";
 import { HelperText, StyledInput } from "@/components/CustomStyled";
 
+export const View = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper
+}));
+
 export const Input = ({label,placeholder}:{label:string,placeholder:string}) => (
   <FormControl defaultValue={""} required>
     <Label>{label}</Label>

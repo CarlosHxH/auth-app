@@ -34,7 +34,7 @@ export default function SimpleAppBar({
   };
 
   return (
-    <AppBar position="static">
+    <AppBar component={'nav'}>
       <Container maxWidth="xl">
         <Toolbar>
           {showBackButton && (
