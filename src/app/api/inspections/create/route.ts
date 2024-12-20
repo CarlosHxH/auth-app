@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
-  const articles = await prisma.inspecaoVeiculo.findMany();
+  const articles = await prisma.inspecao.findMany();
   return NextResponse.json(articles);
 }
 
@@ -10,9 +10,9 @@ export async function POST(request: Request) {
   const { data } = await request.json();
   console.log(data);
   
-  const inspecao = await prisma.inspecaoVeiculo.create({
+  const inspecao = await prisma.inspecao.create({
     data: {
-      nomeCompleto:'',
+      userId:'',
       placa:'',
       modelo:'',
       crlvEmDia:true,

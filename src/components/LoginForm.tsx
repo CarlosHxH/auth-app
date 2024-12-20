@@ -49,9 +49,7 @@ export default function LoginForm() {
 
       if (result?.error) {
         setError(result.error)
-      } else if (result?.ok) {
-        window.location.href = '/dashboard'
-      }
+      } else if (result?.ok) { window.location.href = '/' }
       setIsLoading(false)
     } catch (err:unknown) {
       console.log(err);

@@ -27,16 +27,15 @@ interface InspectionFormData {
 
 export default function EditInspection() {
   const { id } = useParams<{ id: string; tag: string; item: string }>();
-  const { data, isLoading, error } = useSWR(`/api/inspections/${id}`, fetcher);
+  const { data, error, isLoading } = useSWR(`/api/inspections/${id}`, fetcher);
 
   const [formData, setFormData] = useState<InspectionFormData>(data);
   const [saving, setSaving] = useState(false);
 
   const router = useRouter();
 
-  if (error) return <div>Failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
-
+  React.useEffect(()=>setFormData(data),[data])
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
     setFormData((prev) => ({...prev, [name]: type === "checkbox" ? checked : value }));
@@ -72,24 +71,20 @@ export default function EditInspection() {
     }
   };
 
-  if (isLoading) {
+  if (error) return <div>Failed to load</div>;
+  
+  if (isLoading || !formData) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
+      <Box sx={{display: "flex",justifyContent: "center",alignItems: "center",height: "100vh"}}>
         <CircularProgress />
       </Box>
     );
   }
 
+
   return (
     <Box>
-      <ResponsiveAppBar title={`Editar - ${formData.placa}`} showBackButton />
+      <ResponsiveAppBar title={`Editar`} showBackButton />
 
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Paper sx={{ p: { xs: 2, md: 3 } }}>
