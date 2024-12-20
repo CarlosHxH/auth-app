@@ -1,0 +1,73 @@
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const inspections = [
+    {
+      id: "1",
+      placa: "ABC-1234",
+      modelo: "Volkswagen Constellation",
+      crlvEmDia: true,
+      certificadoTacografoEmDia: true,
+      avariasCabine: false,
+      bauPossuiAvarias: false,
+      funcionamentoParteEletrica: true,
+      dataInspecao: "2024-03-19",
+    },
+    {
+      id: "2",
+      placa: "ABC-1234",
+      modelo: "Volkswagen Constellation",
+      crlvEmDia: true,
+      certificadoTacografoEmDia: true,
+      avariasCabine: false,
+      bauPossuiAvarias: false,
+      funcionamentoParteEletrica: true,
+      dataInspecao: "2024-03-19",
+    },
+    {
+      id: "3",
+      placa: "ABC-1234",
+      modelo: "Volkswagen Constellation",
+      crlvEmDia: true,
+      certificadoTacografoEmDia: true,
+      avariasCabine: false,
+      bauPossuiAvarias: false,
+      funcionamentoParteEletrica: true,
+      dataInspecao: "2024-03-19",
+    },
+    {
+      id: "4",
+      placa: "ABC-1234",
+      modelo: "Volkswagen Constellation",
+      crlvEmDia: true,
+      certificadoTacografoEmDia: true,
+      avariasCabine: false,
+      bauPossuiAvarias: false,
+      funcionamentoParteEletrica: true,
+      dataInspecao: "2024-03-19",
+    },
+    {
+      id: "5",
+      placa: "ABC-1234",
+      modelo: "Volkswagen Constellation",
+      crlvEmDia: true,
+      certificadoTacografoEmDia: true,
+      avariasCabine: false,
+      bauPossuiAvarias: false,
+      funcionamentoParteEletrica: true,
+      dataInspecao: "2024-03-19",
+    },
+    {
+      id: "6",
+      placa: "ABC-1234",
+      modelo: "Volkswagen Constellation",
+      crlvEmDia: true,
+      certificadoTacografoEmDia: true,
+      avariasCabine: false,
+      bauPossuiAvarias: false,
+      funcionamentoParteEletrica: true,
+      dataInspecao: "2024-03-19",
+    },
+  ];
+  return NextResponse.json(inspections, { status: 200 });
+}

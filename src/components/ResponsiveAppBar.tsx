@@ -34,6 +34,7 @@ export default function SimpleAppBar({
   };
 
   return (
+    <>
     <AppBar component={'nav'}>
       <Container maxWidth="xl">
         <Toolbar>
@@ -58,5 +59,7 @@ export default function SimpleAppBar({
         </Toolbar>
       </Container>
     </AppBar>
+    <Toolbar/>
+    </>
   );
 }

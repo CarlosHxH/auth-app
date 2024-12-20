@@ -85,7 +85,6 @@ export default function EditInspection() {
   return (
     <Box>
       <ResponsiveAppBar title={`Editar`} showBackButton />
-
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Paper sx={{ p: { xs: 2, md: 3 } }}>
           <Box component="form" onSubmit={handleSubmit} noValidate>

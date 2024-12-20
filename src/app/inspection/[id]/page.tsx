@@ -10,13 +10,14 @@ import {
   Card,
   CardContent,
   ImageList,
-  ImageListItem,
+  ImageListItem
 } from '@mui/material';
 import ResponsiveAppBar from "@/components/ResponsiveAppBar";
 import Image from 'next/image';
 import { fetcher, formatDate } from '@/lib/ultils';
 import { useParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
+import EditFab from '@/components/EditFab';
 
 interface ImageData {
   url: string;
@@ -55,8 +56,8 @@ const Section: React.FC<{ title: string; children: React.ReactNode; }> = ({ titl
 
 
 export default function InspectionView() {
-  const params = useParams<{id: string; tag: string; item: string }>();
-  const { data, error } = useSWR(`/api/inspections/${params.id}`, fetcher)
+  const { id } = useParams<{id: string; tag: string; item: string }>();
+  const { data, error } = useSWR(`/api/inspections/${id}`, fetcher)
   const router = useRouter();
   
   if (error) return <div>Failed to load</div>
@@ -65,7 +66,7 @@ export default function InspectionView() {
   return (
     <Box>
       <ResponsiveAppBar title={`Inspeção - ${data.placa}`} onBackClick={()=>router.push("/")} showBackButton />
-      
+        <EditFab href={`/inspection/edit/${id}`}/>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Paper sx={{ p: { xs: 2, md: 3 } }}>
           {/* Informações Básicas */}
@@ -117,6 +118,7 @@ export default function InspectionView() {
               <Grid item xs={12} md={6}>
                 <Typography variant="subtitle2">Nível de Óleo</Typography>
                 <Typography variant="body1">{data.nivelOleo}</Typography>
+                <ImageSection images={data.fotoNivelOleo} title="Fotos Nível de Óleo" />
               </Grid>
             </Grid>
           </Section>
@@ -201,47 +203,3 @@ export default function InspectionView() {
     </Box>
   );
 }
-
-/*
-// Example of usage with getServerSideProps or getStaticProps
-export async function getServerSideProps({ params }: { params: { id: string } }) {
-  // Here you would fetch the inspection data from your API
-  // This is just example data
-  console.log(params);
-
-  
-  const inspection = {
-    placa: 'ABC-1234',
-    modelo: 'Volkswagen Constellation',
-    dataInspecao: '2024-03-19',
-    crlvEmDia: true,
-    fotoCRLV: [{ url: '/placeholder.jpg', title: 'CRLV' }],
-    certificadoTacografoEmDia: true,
-    fotoTacografo: [{ url: '/placeholder.jpg', title: 'Tacógrafo' }],
-    nivelAgua: 'Normal',
-    fotoNivelAgua: [{ url: '/placeholder.jpg', title: 'Nível de Água' }],
-    nivelOleo: 'Normal',
-    situacaoPneus: 'Bom estado',
-    fotosPneusBom: [{ url: '/placeholder.jpg', title: 'Pneus' }],
-    motivoPneuRuim: '',
-    fotosPneusRuim: [],
-    pneuFurado: '',
-    fotoPneuFurado: [],
-    avariasCabine: false,
-    descricaoAvariasCabine: '',
-    fotosAvariasCabine: [],
-    bauPossuiAvarias: false,
-    descricaoAvariasBau: '',
-    fotosAvariasBau: [],
-    funcionamentoParteEletrica: true,
-    motivoParteEletricaRuim: '',
-    fotosParteEletricaRuim: [],
-    sugestao: 'Nenhuma sugestão adicional.',
-  };
-
-  return {
-    props: {
-      inspection,
-    },
-  };
-}*/

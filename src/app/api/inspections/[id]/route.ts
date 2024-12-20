@@ -12,6 +12,7 @@ const inspections = {
   nivelAgua: "Normal",
   fotoNivelAgua: [{ url: "/placeholder.png", title: "Nível de Água" }],
   nivelOleo: "Normal",
+  fotoNivelOleo: [{ url: "/placeholder.png", title: "Nível de Óleo" }],
   situacaoPneus: "Bom estado",
   fotosPneusBom: [{ url: "/placeholder.png", title: "Pneus" }],
   motivoPneuRuim: "",
