@@ -4,6 +4,8 @@ const prisma = new PrismaClient({ log: ['query', 'info'] });
 
 async function main() {
   const countUsers = await prisma.user.count({});
+  console.log(countUsers);
+  
 }
 
 main()

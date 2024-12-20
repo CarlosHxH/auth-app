@@ -1,19 +1,8 @@
-// components/VehicleInspectionList.tsx
 import React from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Chip,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  Divider,
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Chip, Grid, IconButton, List, ListItem, Divider } from "@mui/material";
 import { Edit as EditIcon, Visibility as ViewIcon } from "@mui/icons-material";
 import { VehicleInspection } from "./types";
+import { formatDate } from "@/lib/ultils";
 
 interface Props {
   inspections: VehicleInspection[];
@@ -21,19 +10,11 @@ interface Props {
   onView?: (id: string) => void;
 }
 
-export default function VehicleInspectionList({
-  inspections,
-  onEdit,
-  onView,
-}: Props) {
-  
+export default function VehicleInspectionList({inspections, onEdit, onView }: Props) {
+
   const getStatusChip = (status: boolean) => (
     <Chip label={status ? "OK" : "Pendente"} color={status ? "success" : "error"} size="small" />
   );
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("pt-BR");
-  };
 
   return (
     <List>

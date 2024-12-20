@@ -9,7 +9,7 @@ import Loading from "@/components/Loading";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { data, error, isLoading } = useSWR('/api', fetcher);
+  const { data, error, isLoading } = useSWR('/api/inspections', fetcher);
   const router = useRouter();
 
   const handleEdit = (id: string) => router.push(`/inspection/edit/${id}`);

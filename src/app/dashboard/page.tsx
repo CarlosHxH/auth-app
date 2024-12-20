@@ -1,32 +1,85 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
-import Image from "next/image";
-import Navbar from "@/components/Navbar";
-import { Container } from "@mui/material";
+"use client"
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { createTheme } from '@mui/material/styles';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import { AppProvider, type Router, type Navigation } from '@toolpad/core/AppProvider';
+import { DashboardLayout } from '@toolpad/core/DashboardLayout';
+import { Person } from '@mui/icons-material';
 
-export default async function Dashboard() {
-  const session = await getServerSession(authOptions);
+const NAVIGATION: Navigation = [
+  {
+    segment: 'dashboard',
+    title: 'Dashboard',
+    icon: <DashboardIcon />,
+  },
+  {
+    segment: 'usuarios',
+    title: 'Usuarios',
+    icon: <Person />,
+  },
+  {
+    segment: 'reports',
+    title: 'Reports',
+    icon: <BarChartIcon />,
+  },
+];
 
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
+const theme = createTheme({
+  cssVariables: {
+    colorSchemeSelector: 'data-toolpad-color-scheme',
+  },
+  colorSchemes: { light: true, dark: true },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 600,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+});
 
+function PageContent({ pathname }: { pathname: string }) {
   return (
-    <div className="p-6">
-      <Navbar />
-      <Container>
-        {session.user.name}
-        {session.user.image && (
-          <Image
-            width={500}
-            height={500}
-            src={session.user.image}
-            alt="Profile"
-            className="rounded-full w-24 h-24 mt-4"
-          />
-        )}
-      </Container>
-    </div>
+    <Box
+      sx={{
+        py: 4,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+      }}
+    >
+      <Typography>Dashboard content for {pathname}</Typography>
+    </Box>
+  );
+}
+
+export default function DashboardLayoutSidebarCollapsed() {
+
+  const [pathname, setPathname] = React.useState('/dashboard');
+
+  const router = React.useMemo<Router>(() => {
+    return {
+      pathname,
+      searchParams: new URLSearchParams(),
+      navigate: (path) => setPathname(String(path)),
+    };
+  }, [pathname]);
+  
+  return (
+    <AppProvider
+      navigation={NAVIGATION}
+      router={router}
+      theme={theme}
+    >
+      <DashboardLayout defaultSidebarCollapsed>
+        <PageContent pathname={pathname} />
+      </DashboardLayout>
+    </AppProvider>
   );
 }
