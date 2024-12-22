@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-type User = {
+export interface User {
     id: string;
     name: string;
     email: string;

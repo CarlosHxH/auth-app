@@ -8,9 +8,10 @@ import {
   Container,
   Box,
 } from "@mui/material";
-import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
+import { ArrowBack as ArrowBackIcon, Dashboard } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import LogoutButton from "./LogoutButton";
+import Link from "next/link";
 
 interface Props {
   title: string;
@@ -49,6 +50,7 @@ export default function SimpleAppBar({
               <ArrowBackIcon />
             </IconButton>
           )}
+          <Link href={'dashboard'}>Dashboard</Link>
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}

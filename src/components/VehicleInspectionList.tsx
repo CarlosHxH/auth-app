@@ -1,13 +1,23 @@
 import React from "react";
 import { Box, Card, CardContent, Typography, Chip, Grid, IconButton, List, ListItem, Divider } from "@mui/material";
 import { Edit as EditIcon, Visibility as ViewIcon } from "@mui/icons-material";
-import { VehicleInspection } from "./types";
 import { formatDate } from "@/lib/ultils";
 
 interface Props {
   inspections: VehicleInspection[];
   onEdit?: (id: string) => void;
   onView?: (id: string) => void;
+}
+interface VehicleInspection {
+  id: string;
+  placa: string;
+  modelo: string;
+  crlvEmDia: boolean;
+  certificadoTacografoEmDia: boolean;
+  avariasCabine: boolean;
+  bauPossuiAvarias: boolean;
+  funcionamentoParteEletrica: boolean;
+  dataInspecao: string;
 }
 
 export default function VehicleInspectionList({inspections, onEdit, onView }: Props) {

@@ -1,36 +1,39 @@
 "use client"
 import React from 'react';
-import {
-  Box,
-  Container,
-  Paper,
-  Typography,
-  Grid,
-  Chip,
-  Card,
-  CardContent,
-  ImageList,
-  ImageListItem
-} from '@mui/material';
+import
+  {
+    Box,
+    Container,
+    Paper,
+    Typography,
+    Grid,
+    Chip,
+    Card,
+    CardContent,
+    ImageList,
+    ImageListItem
+  } from '@mui/material';
 import ResponsiveAppBar from "@/components/ResponsiveAppBar";
 import Image from 'next/image';
 import { fetcher, formatDate } from '@/lib/ultils';
 import { useParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
-import EditFab from '@/components/EditFab';
+import CustomFab from '@/components/CustomFab';
 
-interface ImageData {
+interface ImageData
+{
   url: string;
   title: string;
 }
 
 const StatusChip: React.FC<{ status: boolean }> = ({ status }) => (
-  <Chip label={status ? "OK" : "Pendente"} color={status ? "success" : "error"} size="small"/>
+  <Chip label={status ? "OK" : "Pendente"} color={status ? "success" : "error"} size="small" />
 );
 
-const ImageSection: React.FC<{ images: ImageData[], title: string }> = ({ images, title }) => {
+const ImageSection: React.FC<{ images: ImageData[], title: string }> = ({ images, title }) =>
+{
   if (!images || images.length === 0) return null;
-  
+
   return (
     <Box sx={{ mt: 2 }}>
       <Typography variant="subtitle2" gutterBottom>{title}</Typography>
@@ -55,18 +58,21 @@ const Section: React.FC<{ title: string; children: React.ReactNode; }> = ({ titl
 );
 
 
-export default function InspectionView() {
-  const { id } = useParams<{id: string; tag: string; item: string }>();
+export default function InspectionView()
+{
+  const { id } = useParams<{ id: string; tag: string; item: string }>();
   const { data, error } = useSWR(`/api/inspections/${id}`, fetcher)
   const router = useRouter();
   
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>
-  
+
   return (
     <Box>
-      <ResponsiveAppBar title={`Inspeção - ${data.placa}`} onBackClick={()=>router.push("/")} showBackButton />
-        <EditFab href={`/inspection/edit/${id}`}/>
+      <ResponsiveAppBar title={`Inspeção - ${data.placa}`} onBackClick={() => router.push("/")} showBackButton />
+
+      <CustomFab variant={"Edit"} href={`/inspection/${id}/edit`} />
+
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Paper sx={{ p: { xs: 2, md: 3 } }}>
           {/* Informações Básicas */}
@@ -118,7 +124,6 @@ export default function InspectionView() {
               <Grid item xs={12} md={6}>
                 <Typography variant="subtitle2">Nível de Óleo</Typography>
                 <Typography variant="body1">{data.nivelOleo}</Typography>
-                <ImageSection images={data.fotoNivelOleo} title="Fotos Nível de Óleo" />
               </Grid>
             </Grid>
           </Section>

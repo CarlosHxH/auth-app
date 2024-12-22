@@ -27,6 +27,7 @@ interface InspectionFormData {
 
 export default function EditInspection() {
   const { id } = useParams<{ id: string; tag: string; item: string }>();
+  
   const { data, error, isLoading } = useSWR(`/api/inspections/${id}`, fetcher);
 
   const [formData, setFormData] = useState<InspectionFormData>(data);
@@ -34,7 +35,7 @@ export default function EditInspection() {
 
   const router = useRouter();
 
-  React.useEffect(()=>setFormData(data),[data])
+  React.useEffect(()=>setFormData(data),[data]);
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
