@@ -9,8 +9,10 @@ export async function GET() {
 export async function POST(request: Request) {
   const { data } = await request.json();
   
-  if(data){}
-
+  if(data){
+    return NextResponse.json(data, { status: 201 });
+  }
+/*
   const inspecao = await prisma.inspecao.create({
     data: {
       userId:'',
@@ -40,7 +42,7 @@ export async function POST(request: Request) {
       fotosParteEletricaRuim:'',
       sugestao:''
     },
-  });
+  });*/
 
-  return NextResponse.json(inspecao, { status: 201 });
+  return NextResponse.json({}, { status: 201 });
 }

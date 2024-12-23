@@ -1,63 +1,53 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // FormComponent.tsx
-"use client";
-import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  FormControlLabel,
-  Switch,
-  Button,
-  Typography,
-  Paper,
-  Grid,
-} from "@mui/material";
-import { VehicleInspectionForm, VehicleInspectionSchema } from "./types";
-import { useSession } from "next-auth/react";
-import FileUpload from "@/components/FileUpload";
+'use client';
+import React, { useState } from 'react';
+import { Box, TextField, FormControlLabel, Switch, Button, Typography, Paper, Grid } from '@mui/material';
+import { VehicleInspectionForm, VehicleInspectionSchema } from './types';
+import { prisma } from '@/lib/prisma';
+import { useSession } from 'next-auth/react';
 
 const initialFormState: VehicleInspectionForm = {
-  placa: "",
-  modelo: "",
+  placa: '',
+  modelo: '',
   crlvEmDia: false,
-  fotoCRLV: "",
+  fotoCRLV: '',
   certificadoTacografoEmDia: false,
-  fotoTacografo: "",
-  nivelAgua: "",
-  fotoNivelAgua: "",
-  nivelOleo: "",
-  situacaoPneus: "",
-  fotosPneusBom: "",
-  motivoPneuRuim: "",
-  fotosPneusRuim: "",
-  pneuFurado: "",
-  fotoPneuFurado: "",
+  fotoTacografo: '',
+  nivelAgua: '',
+  fotoNivelAgua: '',
+  nivelOleo: '',
+  situacaoPneus: '',
+  fotosPneusBom: '',
+  motivoPneuRuim: '',
+  fotosPneusRuim: '',
+  pneuFurado: '',
+  fotoPneuFurado: '',
   avariasCabine: false,
-  descricaoAvariasCabine: "",
-  fotosAvariasCabine: "",
+  descricaoAvariasCabine: '',
+  fotosAvariasCabine: '',
   bauPossuiAvarias: false,
-  descricaoAvariasBau: "",
-  fotosAvariasBau: "",
+  descricaoAvariasBau: '',
+  fotosAvariasBau: '',
   funcionamentoParteEletrica: false,
-  motivoParteEletricaRuim: "",
-  fotosParteEletricaRuim: "",
-  sugestao: "",
+  motivoParteEletricaRuim: '',
+  fotosParteEletricaRuim: '',
+  sugestao: '',
 };
 
 export default function FormComponent() {
-  const [formData, setFormData] =
-    useState<VehicleInspectionForm>(initialFormState);
+  const [formData, setFormData] = useState<VehicleInspectionForm>(initialFormState);
   const [errors, setErrors] = useState<{ [key: string]: string | any }>({});
+
+  const { data: session } = useSession();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
-
-  const { data: session } = useSession();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -73,83 +63,24 @@ export default function FormComponent() {
 
     // If validation passes, save to Prisma
     console.log("Form data is valid:", formData);
-    try {
-      const data = {
-        data: {
-          userId: session?.user.id,
-          placa: formData.placa,
-          modelo: formData.modelo,
-          dataInspecao: new Date(),
-          crlvEmDia: formData.crlvEmDia,
-          fotoCRLV: JSON.stringify(formData.fotoCRLV),
-          certificadoTacografoEmDia: formData.certificadoTacografoEmDia,
-          fotoTacografo: JSON.stringify(formData.fotoTacografo),
-          nivelAgua: JSON.stringify(formData.nivelAgua),
-          fotoNivelAgua: JSON.stringify(formData.fotoNivelAgua),
-          nivelOleo: JSON.stringify(formData.nivelOleo),
-          situacaoPneus: JSON.stringify(formData.situacaoPneus),
-          fotosPneusBom: JSON.stringify(formData.fotosPneusBom),
-          motivoPneuRuim: JSON.stringify(formData.motivoPneuRuim),
-          fotosPneusRuim: JSON.stringify(formData.fotosPneusRuim),
-          pneuFurado: JSON.stringify(formData.pneuFurado),
-          fotoPneuFurado: JSON.stringify(formData.fotoPneuFurado),
-          avariasCabine: formData.avariasCabine,
-          descricaoAvariasCabine: JSON.stringify(
-            formData.descricaoAvariasCabine
-          ),
-          fotosAvariasCabine: JSON.stringify(formData.fotosAvariasCabine),
-          bauPossuiAvarias: formData.bauPossuiAvarias,
-          descricaoAvariasBau: JSON.stringify(formData.descricaoAvariasBau),
-          fotosAvariasBau: JSON.stringify(formData.fotosAvariasBau),
-          funcionamentoParteEletrica: formData.funcionamentoParteEletrica,
-          motivoParteEletricaRuim: JSON.stringify(
-            formData.motivoParteEletricaRuim
-          ),
-          fotosParteEletricaRuim: JSON.stringify(
-            formData.fotosParteEletricaRuim
-          ),
-          sugestao: JSON.stringify(formData.sugestao),
-        },
-      };
-      fetch("/api/inspections/create", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(data),
-      })
-        .then((e) => e.json())
-        .then(function (res) {
-          console.log(res);
-        })
-        .catch(function (res) {
-          console.log(res);
-        });
-
-      console.log("Inspeção salva com sucesso!");
-    } catch (error) {
-      console.error("Erro ao salvar inspeção:", error);
-    }
+    // Add your submit logic here, like saving to Prisma
+    await prisma.inspecao.create({ data: {...formData,userId:session?.user.id } });
   };
-
-  const handleFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    fieldName: string
-  ) => {
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     const file = event.target.files?.[0];
     if (file) {
       // In a real application, you would handle file upload here
       // For now, we'll just store the file name
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
-        [fieldName]: file.name,
+        [fieldName]: file.name
       }));
     }
   };
 
   return (
-    <Paper sx={{ p: 3, maxWidth: 800, margin: "auto" }}>
+    <Paper sx={{ p: 3, maxWidth: 800, margin: 'auto' }}>
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Typography variant="h5" gutterBottom>
           Inspeção de Veículo
@@ -158,7 +89,16 @@ export default function FormComponent() {
         <Grid container spacing={3}>
           {/* Identificação do Veículo */}
           <Grid item xs={12} md={6}>
-            <TextField required fullWidth label="Placa" name="placa" value={formData.placa} onChange={handleChange} error={!!errors.placa} helperText={errors.placa ? errors.placa[0] : ""}/>
+            <TextField
+              required
+              fullWidth
+              label="Placa"
+              name="placa"
+              value={formData.placa}
+              onChange={handleChange}
+              error={!!errors.placa}
+              helperText={errors.placa ? errors.placa[0] : ''}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
@@ -169,7 +109,7 @@ export default function FormComponent() {
               value={formData.modelo}
               onChange={handleChange}
               error={!!errors.modelo}
-              helperText={errors.modelo ? errors.modelo[0] : ""}
+              helperText={errors.modelo ? errors.modelo[0] : ''}
             />
           </Grid>
 
@@ -185,12 +125,11 @@ export default function FormComponent() {
               }
               label="CRLV em dia"
             />
-            <FileUpload onChange={console.log}/>
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => handleFileChange(e, "fotoCRLV")}
-              style={{ marginTop: "10px" }}
+              onChange={(e) => handleFileChange(e, 'fotoCRLV')}
+              style={{ marginTop: '10px' }}
             />
           </Grid>
 
@@ -209,8 +148,8 @@ export default function FormComponent() {
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => handleFileChange(e, "fotoTacografo")}
-              style={{ marginTop: "10px" }}
+              onChange={(e) => handleFileChange(e, 'fotoTacografo')}
+              style={{ marginTop: '10px' }}
             />
           </Grid>
 
@@ -223,13 +162,13 @@ export default function FormComponent() {
               value={formData.nivelAgua}
               onChange={handleChange}
               error={!!errors.nivelAgua}
-              helperText={errors.nivelAgua ? errors.nivelAgua[0] : ""}
+              helperText={errors.nivelAgua ? errors.nivelAgua[0] : ''}
             />
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => handleFileChange(e, "fotoNivelAgua")}
-              style={{ marginTop: "10px" }}
+              onChange={(e) => handleFileChange(e, 'fotoNivelAgua')}
+              style={{ marginTop: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -240,7 +179,7 @@ export default function FormComponent() {
               value={formData.nivelOleo}
               onChange={handleChange}
               error={!!errors.nivelOleo}
-              helperText={errors.nivelOleo ? errors.nivelOleo[0] : ""}
+              helperText={errors.nivelOleo ? errors.nivelOleo[0] : ''}
             />
           </Grid>
 
@@ -253,33 +192,33 @@ export default function FormComponent() {
               value={formData.situacaoPneus}
               onChange={handleChange}
               error={!!errors.situacaoPneus}
-              helperText={errors.situacaoPneus ? errors.situacaoPneus[0] : ""}
+              helperText={errors.situacaoPneus ? errors.situacaoPneus[0] : ''}
             />
             <input
               type="file"
               accept="image/*"
               multiple
-              onChange={(e) => handleFileChange(e, "fotosPneusBom")}
-              style={{ marginTop: "10px" }}
+              onChange={(e) => handleFileChange(e, 'fotosPneusBom')}
+              style={{ marginTop: '10px' }}
             />
           </Grid>
 
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Motivo Pneu Ruim"
+              label="Motivo P neu Ruim"
               name="motivoPneuRuim"
               value={formData.motivoPneuRuim}
               onChange={handleChange}
               error={!!errors.motivoPneuRuim}
-              helperText={errors.motivoPneuRuim ? errors.motivoPneuRuim[0] : ""}
+              helperText={errors.motivoPneuRuim ? errors.motivoPneuRuim[0] : ''}
             />
             <input
               type="file"
               accept="image/*"
               multiple
-              onChange={(e) => handleFileChange(e, "fotosPneusRuim")}
-              style={{ marginTop: "10px" }}
+              onChange={(e) => handleFileChange(e, 'fotosPneusRuim')}
+              style={{ marginTop: '10px' }}
             />
           </Grid>
 
@@ -291,13 +230,13 @@ export default function FormComponent() {
               value={formData.pneuFurado}
               onChange={handleChange}
               error={!!errors.pneuFurado}
-              helperText={errors.pneuFurado ? errors.pneuFurado[0] : ""}
+              helperText={errors.pneuFurado ? errors.pneuFurado[0] : ''}
             />
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => handleFileChange(e, "fotoPneuFurado")}
-              style={{ marginTop: "10px" }}
+              onChange={(e) => handleFileChange(e, 'fotoPneuFurado')}
+              style={{ marginTop: '10px' }}
             />
           </Grid>
 
@@ -325,18 +264,14 @@ export default function FormComponent() {
                   rows={3}
                   sx={{ mt: 2 }}
                   error={!!errors.descricaoAvariasCabine}
-                  helperText={
-                    errors.descricaoAvariasCabine
-                      ? errors.descricaoAvariasCabine[0]
-                      : ""
-                  }
+                  helperText={errors.descricaoAvariasCabine ? errors.descricaoAvariasCabine[0] : ''}
                 />
                 <input
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => handleFileChange(e, "fotosAvariasCabine")}
-                  style={{ marginTop: "10px" }}
+                  onChange={(e) => handleFileChange(e, 'fotosAvariasCabine')}
+                  style={{ marginTop: '10px' }}
                 />
               </>
             )}
@@ -366,18 +301,14 @@ export default function FormComponent() {
                   rows={3}
                   sx={{ mt: 2 }}
                   error={!!errors.descricaoAvariasBau}
-                  helperText={
-                    errors.descricaoAvariasBau
-                      ? errors.descricaoAvariasBau[0]
-                      : ""
-                  }
+                  helperText={errors.descricaoAvariasBau ? errors.descricaoAvariasBau[0] : ''}
                 />
                 <input
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => handleFileChange(e, "fotosAvariasBau")}
-                  style={{ marginTop: "10px" }}
+                  onChange={(e) => handleFileChange(e, 'fotosAvariasBau')}
+                  style={{ marginTop: '10px' }}
                 />
               </>
             )}
@@ -395,7 +326,7 @@ export default function FormComponent() {
               }
               label="Funcionamento da Parte Elétrica"
             />
-            {formData.funcionamentoParteEletrica && (
+            {!formData.funcionamentoParteEletrica && (
               <>
                 <TextField
                   fullWidth
@@ -404,23 +335,17 @@ export default function FormComponent() {
                   value={formData.motivoParteEletricaRuim}
                   onChange={handleChange}
                   multiline
-                  rows={2}
+                  rows={1}
                   sx={{ mt: 2 }}
                   error={!!errors.motivoParteEletricaRuim}
-                  helperText={
-                    errors.motivoParteEletricaRuim
-                      ? errors.motivoParteEletricaRuim[0]
-                      : ""
-                  }
+                  helperText={errors.motivoParteEletricaRuim ? errors.motivoParteEletricaRuim[0] : ''}
                 />
                 <input
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) =>
-                    handleFileChange(e, "fotosParteEletricaRuim")
-                  }
-                  style={{ marginTop: "10px" }}
+                  onChange={(e) => handleFileChange(e, 'fotosParteEletricaRuim')}
+                  style={{ marginTop: '10px' }}
                 />
               </>
             )}
@@ -437,7 +362,7 @@ export default function FormComponent() {
               multiline
               rows={4}
               error={!!errors.sugestao}
-              helperText={errors.sugestao ? errors.sugestao[0] : ""}
+              helperText={errors.sugestao ? errors.sugestao[0] : ''}
             />
           </Grid>
 
