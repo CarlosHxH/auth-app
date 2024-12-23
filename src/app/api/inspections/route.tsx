@@ -1,91 +1,24 @@
 import { NextResponse } from "next/server";
 import { prisma } from '@/lib/prisma';
+import { getServerSession } from "next-auth";
 
-export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+export async function GET() {
   try {
-    //const userId = (await params).userId;
-    //if(userId){
-      const inspections = await prisma.inspecao.findMany();//{where: { userId: userId }})
-      console.log(inspections);
-      return NextResponse.json(inspections, { status: 200 });
-    //} else {
-    //  return NextResponse.json({error: "Id não encontrado!"}, { status: 500 });
-    //}
+    const session = await getServerSession()
+    if(session){
+      const user = await prisma.user.findUnique({where: { email: session.user.email || "" }})
+      if(user){
+        const inspections = await prisma.inspecao.findMany({where: { userId: user.id }})
+        return NextResponse.json(inspections, { status: 200 });
+      } else {
+        return false;
+      }
+    } else {
+      throw "Usuário não autenticado!"
+    }
   } catch (error) {
-    return NextResponse.json({error:"Não encontrado!"}, { status: 500 });
+    return NextResponse.json(error, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
-}
-
-
-
-export async function GETs() {
-  const inspections = [
-    {
-      id: "1",
-      placa: "ABC-1234",
-      modelo: "Volkswagen Constellation",
-      crlvEmDia: true,
-      certificadoTacografoEmDia: true,
-      avariasCabine: false,
-      bauPossuiAvarias: false,
-      funcionamentoParteEletrica: true,
-      dataInspecao: "2024-03-19",
-    },
-    {
-      id: "2",
-      placa: "ABC-1234",
-      modelo: "Volkswagen Constellation",
-      crlvEmDia: true,
-      certificadoTacografoEmDia: true,
-      avariasCabine: false,
-      bauPossuiAvarias: false,
-      funcionamentoParteEletrica: true,
-      dataInspecao: "2024-03-19",
-    },
-    {
-      id: "3",
-      placa: "ABC-1234",
-      modelo: "Volkswagen Constellation",
-      crlvEmDia: true,
-      certificadoTacografoEmDia: true,
-      avariasCabine: false,
-      bauPossuiAvarias: false,
-      funcionamentoParteEletrica: true,
-      dataInspecao: "2024-03-19",
-    },
-    {
-      id: "4",
-      placa: "ABC-1234",
-      modelo: "Volkswagen Constellation",
-      crlvEmDia: true,
-      certificadoTacografoEmDia: true,
-      avariasCabine: false,
-      bauPossuiAvarias: false,
-      funcionamentoParteEletrica: true,
-      dataInspecao: "2024-03-19",
-    },
-    {
-      id: "5",
-      placa: "ABC-1234",
-      modelo: "Volkswagen Constellation",
-      crlvEmDia: true,
-      certificadoTacografoEmDia: true,
-      avariasCabine: false,
-      bauPossuiAvarias: false,
-      funcionamentoParteEletrica: true,
-      dataInspecao: "2024-03-19",
-    },
-    {
-      id: "6",
-      placa: "ABC-1234",
-      modelo: "Volkswagen Constellation",
-      crlvEmDia: true,
-      certificadoTacografoEmDia: true,
-      avariasCabine: false,
-      bauPossuiAvarias: false,
-      funcionamentoParteEletrica: true,
-      dataInspecao: "2024-03-19",
-    },
-  ];
-  return NextResponse.json(inspections, { status: 200 });
 }

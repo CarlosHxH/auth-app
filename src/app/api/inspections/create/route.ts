@@ -8,8 +8,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const { data } = await request.json();
-  console.log(data);
   
+  if(data){}
+
   const inspecao = await prisma.inspecao.create({
     data: {
       userId:'',
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
       funcionamentoParteEletrica:false,
       motivoParteEletricaRuim:'',
       fotosParteEletricaRuim:'',
-      sugestao:'',
+      sugestao:''
     },
   });
 

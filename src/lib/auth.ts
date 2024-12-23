@@ -11,7 +11,8 @@ async function createUser(email: string, password: string) {
     data: {
       email,
       password: hashedPassword,
-      name: email.split('@')[0]
+      name: email.split('@')[0],
+      role: 'user'
     }
   })
 }
@@ -47,7 +48,8 @@ export const authOptions: NextAuthOptions = {
           return {
             id: user.id,
             email: user.email,
-            name: user.name
+            name: user.name,
+            role: user.role
           }
         } else {
           // Login logic
@@ -72,7 +74,8 @@ export const authOptions: NextAuthOptions = {
             id: user.id,
             name: user.name,
             email: user.email,
-            image: ""
+            image: "",
+            role: 'user'
           }
         }
       }
@@ -81,8 +84,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // Customize token
     async jwt({ token, user }) {
+
       if (user) {
-        token.id = user.id
+        token.id = user.id;
         token.email = user.email
         token.name = user.name
         token.image = user.image
@@ -91,8 +95,9 @@ export const authOptions: NextAuthOptions = {
     },
     // Customize session
     async session({ session, token }) {
+      
       if (session.user) {
-        session.user.id = token.id as string
+        session.user.id = token.sub as string
         session.user.email = token.email as string
         session.user.name = token.name as string
         session.user.image = token.image as string

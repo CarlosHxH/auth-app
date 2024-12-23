@@ -1,4 +1,5 @@
 // middleware.ts
+
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
@@ -17,5 +18,23 @@ export async function middleware(req: NextRequest) {
 
 // Define as rotas que o middleware deve proteger
 export const config = {
-  matcher: ['/admin/:path*','/dashboard/:path*','/'], // Altere para as rotas que você deseja proteger
+  matcher: ['/admin/:path*','/dashboard/:path*','/'], // Rotas protegidas
 };
+
+/*
+import { withAuth } from "next-auth/middleware"
+
+export default withAuth(
+  // `withAuth` augments your `Request` with the user's token.
+  function middleware(req) {
+    console.log(req.nextauth.token)
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => token?.role === "admin",
+    },
+  },
+)
+
+export const config = { matcher: ["/admin"] }
+*/

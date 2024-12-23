@@ -7,27 +7,20 @@ import { Navigation } from '@toolpad/core/AppProvider';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { signIn, signOut, useSession } from "next-auth/react";
 import { AppProvider } from '@toolpad/core/nextjs';
-import { useDemoRouter } from '@toolpad/core/internal';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { Avatar } from '@mui/material';
 
 // Move navigation configuration outside component to prevent recreation
 const createNavigation = (): Navigation => [
+  { kind: 'header', title: 'Main items' },
   {
-    kind: 'header',
-    title: 'Main items',
-  },
-  {
-    segment: '',
+    segment: './dashboard',
     title: 'Dashboard',
     icon: <DashboardIcon />,
   },
+  { kind: 'header', title: 'Relatório' },
   {
-    kind: 'header',
-    title: 'Relatório',
-  },
-  {
-    segment: 'relatorio',
+    segment: './dashboard/relatorio',
     title: 'Relatório',
     icon: <BarChartIcon />,
   }
@@ -43,20 +36,16 @@ export default function DashboardPagesLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   const { data: session, status } = useSession();
-  
-  const router = useDemoRouter('');
   
   // Use state to handle client-side navigation
   const [mounted, setMounted] = React.useState(false);
 
-
   const authentication = React.useMemo(() => {return { signIn, signOut }}, []);
   
   // Handle hydration mismatch by waiting for mount
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  React.useEffect(() => { setMounted(true) }, []);
 
   // Memoize navigation to prevent unnecessary rerenders
   const navigation = React.useMemo(() => createNavigation(), []);
@@ -67,7 +56,7 @@ export default function DashboardPagesLayout({
   }
   
   return (
-    <AppProvider session={session} authentication={authentication} branding={BRANDING} navigation={navigation} router={router}>
+    <AppProvider session={session} authentication={authentication} branding={BRANDING} navigation={navigation}>
       <DashboardLayout>
         <PageContainer>{children}</PageContainer>
       </DashboardLayout>

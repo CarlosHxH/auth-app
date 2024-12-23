@@ -109,6 +109,8 @@ function CustomLabel({ color, expandable, children, ...other }: CustomLabelProps
     blue: (theme.vars || theme).palette.primary.main,
     green: (theme.vars || theme).palette.success.main,
   };
+  
+  if(expandable){}
 
   const iconColor = color ? colors[color] : null;
   return (

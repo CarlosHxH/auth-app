@@ -8,12 +8,14 @@ generator client {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String?
-  name      String?
-  image     String?
-  createdAt DateTime @default(now())
+  id              String   @id @default(cuid())
+  email           String   @unique
+  emailVerified   DateTime?
+  password        String?
+  name            String?
+  image           String?
+  createdAt       DateTime @default(now())
+  role            String?
   
   // Optional: Keep OAuth account linkage
   accounts  Account[]
@@ -86,7 +88,5 @@ model Inspecao {
   motivoParteEletricaRuim          String
   fotosParteEletricaRuim           String
   sugestao                         String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  //user   User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onUpdate: Cascade)
 }
-
