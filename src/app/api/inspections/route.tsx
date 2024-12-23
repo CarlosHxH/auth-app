@@ -1,6 +1,24 @@
 import { NextResponse } from "next/server";
+import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+  try {
+    //const userId = (await params).userId;
+    //if(userId){
+      const inspections = await prisma.inspecao.findMany();//{where: { userId: userId }})
+      console.log(inspections);
+      return NextResponse.json(inspections, { status: 200 });
+    //} else {
+    //  return NextResponse.json({error: "Id não encontrado!"}, { status: 500 });
+    //}
+  } catch (error) {
+    return NextResponse.json({error:"Não encontrado!"}, { status: 500 });
+  }
+}
+
+
+
+export async function GETs() {
   const inspections = [
     {
       id: "1",

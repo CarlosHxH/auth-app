@@ -56,34 +56,37 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-
 model Inspecao {
-  id                            String   @id @default(cuid())
-  userId                        String
-  placa                         String
-  modelo                        String
-  crlvEmDia                     Boolean
-  fotoCRLV                      String
-  certificadoTacografoEmDia     Boolean
-  fotoTacografo                 String
-  nivelAgua                     String
-  fotoNivelAgua                 String
-  nivelOleo                     String
-  situacaoPneus                 String
-  fotosPneusBom                 String
-  motivoPneuRuim                String
-  fotosPneusRuim                String
-  pneuFurado                    String
-  fotoPneuFurado                String
-  avariasCabine                 Boolean
-  descricaoAvariasCabine        String
-  fotosAvariasCabine            String
-  bauPossuiAvarias              Boolean
-  descricaoAvariasBau           String
-  fotosAvariasBau               String
-  funcionamentoParteEletrica    Boolean
-  motivoParteEletricaRuim       String
-  fotosParteEletricaRuim        String
-  sugestao                      String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                               String      @id @default(cuid())
+  userId                           String
+  placa                            String
+  modelo                           String
+  dataInspecao                     DateTime
+  crlvEmDia                        Boolean
+  fotoCRLV                         String
+  certificadoTacografoEmDia        Boolean
+  fotoTacografo                    String
+  nivelAgua                        String
+  fotoNivelAgua                    String
+  nivelOleo                        String
+  fotoNivelOleo                    String
+  situacaoPneus                    String
+  fotosPneusBom                    String
+  motivoPneuRuim                   String
+  fotosPneusRuim                   String
+  pneuFurado                       String
+  fotoPneuFurado                   String
+  avariasCabine                    Boolean
+  descricaoAvariasCabine           String
+  fotosAvariasCabine               String
+  bauPossuiAvarias                 Boolean
+  descricaoAvariasBau              String
+  fotosAvariasBau                  String
+  funcionamentoParteEletrica       Boolean
+  motivoParteEletricaRuim          String
+  fotosParteEletricaRuim           String
+  sugestao                         String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  //user   User @relation(fields: [userId], references: [id])
 }
+

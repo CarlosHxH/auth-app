@@ -1,13 +1,18 @@
+"use client";
+
 import * as React from 'react';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { Navigation } from '@toolpad/core/AppProvider';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import SessionProvider from "@/provider/SessionProvider";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { AppProvider } from '@toolpad/core/nextjs';
+import { useDemoRouter } from '@toolpad/core/internal';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import { Avatar } from '@mui/material';
 
-const NAVIGATION: Navigation = [
+// Move navigation configuration outside component to prevent recreation
+const createNavigation = (): Navigation => [
   {
     kind: 'header',
     title: 'Main items',
@@ -17,20 +22,55 @@ const NAVIGATION: Navigation = [
     title: 'Dashboard',
     icon: <DashboardIcon />,
   },
+  {
+    kind: 'header',
+    title: 'Relatório',
+  },
+  {
+    segment: 'relatorio',
+    title: 'Relatório',
+    icon: <BarChartIcon />,
+  }
 ];
 
 const BRANDING = {
+  logo:<Avatar src={"/logo.png"} alt={''}/>,
   title: '5sTransportes',
-};
+} as const;
 
-export default async function DashboardPagesLayout(props: { children: React.ReactNode })
-{
-  const session = await getServerSession(authOptions);
+export default function DashboardPagesLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  const { data: session, status } = useSession();
+  
+  const router = useDemoRouter('');
+  
+  // Use state to handle client-side navigation
+  const [mounted, setMounted] = React.useState(false);
+
+
+  const authentication = React.useMemo(() => {return { signIn, signOut }}, []);
+  
+  // Handle hydration mismatch by waiting for mount
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Memoize navigation to prevent unnecessary rerenders
+  const navigation = React.useMemo(() => createNavigation(), []);
+
+  // Return null or loading state during SSR
+  if (!mounted || status === "loading") {
+    return null;
+  }
+  
   return (
-    <SessionProvider session={session}>
-      <DashboardLayout branding={BRANDING} navigation={NAVIGATION}>
-        <PageContainer>{props.children}</PageContainer>
+    <AppProvider session={session} authentication={authentication} branding={BRANDING} navigation={navigation} router={router}>
+      <DashboardLayout>
+        <PageContainer>{children}</PageContainer>
       </DashboardLayout>
-    </SessionProvider>
+    </AppProvider>
   );
 }

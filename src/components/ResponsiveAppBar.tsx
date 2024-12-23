@@ -18,6 +18,10 @@ export default function SimpleAppBar({
 }: Props) {
   const router = useRouter();
 
+  const handleNext = () => {
+    router.push("/dashboard");
+  };
+
   const handleBack = () => {
     if (onBackClick) {
       onBackClick();
@@ -37,7 +41,7 @@ export default function SimpleAppBar({
             </IconButton>
           )}
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography onClick={handleNext} variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
           <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>

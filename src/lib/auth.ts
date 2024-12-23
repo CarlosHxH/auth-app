@@ -36,9 +36,7 @@ export const authOptions: NextAuthOptions = {
         // Handle login or signup based on type
         if (credentials.type === 'signup') {
           // Signup logic
-          const existingUser = await prisma.user.findUnique({
-            where: { email: credentials.email }
-          })
+          const existingUser = await prisma.user.findUnique({where: { email: credentials.email }})
 
           if (existingUser) {
             throw new Error('User already exists')
@@ -72,8 +70,9 @@ export const authOptions: NextAuthOptions = {
 
           return {
             id: user.id,
+            name: user.name,
             email: user.email,
-            name: user.name
+            image: ""
           }
         }
       }
@@ -86,6 +85,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id
         token.email = user.email
         token.name = user.name
+        token.image = user.image
       }
       return token
     },
@@ -95,6 +95,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string
         session.user.email = token.email as string
         session.user.name = token.name as string
+        session.user.image = token.image as string
       }
       return session
     }
