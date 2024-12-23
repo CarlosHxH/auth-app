@@ -1,17 +1,9 @@
 "use client";
 import React from "react";
-import {
-  AppBar,
-  IconButton,
-  Toolbar,
-  Typography,
-  Container,
-  Box,
-} from "@mui/material";
-import { ArrowBack as ArrowBackIcon, Dashboard } from "@mui/icons-material";
+import { AppBar, IconButton, Toolbar, Typography, Container, Box } from "@mui/material";
+import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import LogoutButton from "./LogoutButton";
-import Link from "next/link";
 
 interface Props {
   title: string;
@@ -40,17 +32,10 @@ export default function SimpleAppBar({
       <Container maxWidth="xl">
         <Toolbar>
           {showBackButton && (
-            <IconButton
-              color="inherit"
-              aria-label="back"
-              onClick={handleBack}
-              edge="start"
-              sx={{ mr: 2 }}
-            >
+            <IconButton color="inherit" aria-label="back" onClick={handleBack} edge="start" sx={{ mr: 2 }}>
               <ArrowBackIcon />
             </IconButton>
           )}
-          <Link href={'dashboard'}>Dashboard</Link>
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}

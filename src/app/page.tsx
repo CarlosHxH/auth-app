@@ -12,7 +12,6 @@ export default function Home() {
   const { data, error, isLoading } = useSWR('/api/inspections', fetcher);
   const router = useRouter();
 
-  const handleAdd = (id: string) => router.push(`/inspection/create`);
   const handleView = (id: string) => router.push(`/inspection/${id}`);
   const handleEdit = (id: string) => router.push(`/inspection/${id}/edit`);
   
@@ -23,7 +22,7 @@ export default function Home() {
     <div>
       <ResponsiveAppBar title="5sTransportes" />
       <VehicleInspectionList inspections={data} onEdit={handleEdit} onView={handleView} />
-      <CustomFab onClick={handleAdd} variant={"Plus"} />
+      <CustomFab href={'/inspection/create'} variant={"Plus"} />
     </div>
   );
 }

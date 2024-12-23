@@ -1,31 +1,31 @@
 "use client";
+import { type MouseEventHandler } from "react";
+import Link from "next/link";
 import Fab from "@mui/material/Fab";
 import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
-import Link from "next/link";
-import { MouseEventHandler } from "react";
 
-interface Props
-{
+interface Props {
   href?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   variant?: "Plus" | "Edit";
 }
 
-export default function CustomFab({ href, onClick, variant }: Props)
-{
-  if (Boolean(href))
-  {
-    return (
-      <Link href={href||''}>
-        <Fab sx={{ position: "fixed", bottom: 20, right: 30 }} color="primary">
-          {variant === "Edit" ? <EditIcon /> : <AddIcon />}
-        </Fab>
-      </Link>
-    )
-  }
+const fabStyles = {
+  position: "fixed",
+  bottom: 20,
+  right: 30,
+} as const;
+
+export default function CustomFab({ href, onClick, variant = "Plus" }: Props) {
+  const Icon = variant === "Edit" ? EditIcon : AddIcon;
+
+  const fabElement = (
+    <Fab sx={fabStyles} color="primary"><Icon /></Fab>
+  );
+
+  if (href) return <Link href={href}>{fabElement}</Link>;
+  
   return (
-    <Fab onClick={onClick} sx={{ position: "fixed", bottom: 20, right: 30 }} color="primary">
-      {variant === "Edit" ? <EditIcon /> : <AddIcon />}
-    </Fab>
+    <Fab onClick={onClick} sx={fabStyles} color="primary"><Icon /></Fab>
   );
 }
