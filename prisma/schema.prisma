@@ -8,19 +8,20 @@ generator client {
 }
 
 model User {
-  id              String   @id @default(cuid())
-  email           String   @unique
+  id              String     @id @default(cuid())
+  email           String     @unique
   emailVerified   DateTime?
   password        String?
   name            String?
   image           String?
-  createdAt       DateTime @default(now())
+  createdAt       DateTime   @default(now())
   role            String?
   
-  // Optional: Keep OAuth account linkage
-  accounts  Account[]
-  sessions  Session[]
-  inspecao  Inspecao[]
+  accounts        Account[]
+  sessions        Session[]
+  
+  vehicles        Vehicles[]
+  inspections     Inspections[]
 }
 
 model Account {
@@ -47,7 +48,8 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -58,35 +60,51 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Inspecao {
+model Vehicles {
+  id            String   @id @default(cuid())
+  make          String
+  model         String
+  year          Int
+  licensePlate  String   @unique // Assuming license plates should be unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  Inspections Inspections[]
+}
+
+model Inspections {
   id                               String      @id @default(cuid())
-  userId                           String
-  placa                            String
-  modelo                           String
   dataInspecao                     DateTime
   crlvEmDia                        Boolean
-  fotoCRLV                         String
+  fotoCRLV                         String?
   certificadoTacografoEmDia        Boolean
-  fotoTacografo                    String
-  nivelAgua                        String
-  fotoNivelAgua                    String
-  nivelOleo                        String
-  fotoNivelOleo                    String
-  situacaoPneus                    String
-  fotosPneusBom                    String
-  motivoPneuRuim                   String
-  fotosPneusRuim                   String
-  pneuFurado                       String
-  fotoPneuFurado                   String
+  fotoTacografo                    String?
+  nivelAgua                        String?
+  fotoNivelAgua                    String?
+  nivelOleo                        String?
+  fotoNivelOleo                    String?
+  situacaoPneus                    String?
+  fotosPneusBom                    String?
+  motivoPneuRuim                   String?
+  fotosPneusRuim                   String?
+  pneuFurado                       Boolean
+  fotoPneuFurado                   String?
   avariasCabine                    Boolean
-  descricaoAvariasCabine           String
-  fotosAvariasCabine               String
+  descricaoAvariasCabine           String?
+  fotosAvariasCabine               String?
   bauPossuiAvarias                 Boolean
-  descricaoAvariasBau              String
-  fotosAvariasBau                  String
+  descricaoAvariasBau              String?
+  fotosAvariasBau                  String?
   funcionamentoParteEletrica       Boolean
-  motivoParteEletricaRuim          String
-  fotosParteEletricaRuim           String
-  sugestao                         String
-  user User @relation(fields: [userId], references: [id], onUpdate: Cascade)
+  motivoParteEletricaRuim          String?
+  fotosParteEletricaRuim           String?
+  sugestao                         String?
+
+  userId                           String
+  vehicleId                        String
+  user                             User     @relation(fields: [userId], references: [id])
+  vehicle                          Vehicles  @relation(fields: [vehicleId], references: [id])
 }

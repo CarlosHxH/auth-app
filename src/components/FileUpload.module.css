@@ -19,10 +19,10 @@
   
   .removeButton {
     position: absolute;
-    right: 10px; /* Ajuste a distância do lado direito */
-    top: 50%; /* Centraliza verticalmente */
+    right: 5px; /* Ajuste a distância do lado direito */
+    bottom: 5; /* Centraliza verticalmente */
     transform: translateY(-50%); /* Ajusta para centralizar corretamente */
-    background-color: red; /* Cor de fundo vermelha */
+    background-color: #e96a6ac0; /* Cor de fundo vermelha */
     color: white; /* Cor do texto branca */
     border: none; /* Remove a borda */
     border-radius: 50%; /* Estilo de bolha */
@@ -33,13 +33,16 @@
     display: flex; /* Flexbox para centralizar o texto */
     align-items: center; /* Centraliza verticalmente */
     justify-content: center; /* Centraliza horizontalmente */
+    transition: 1s;
     &:hover {
-        background-color: darkred;
+      transition: 1s;
+      background-color: #e64343;
+      transform: scale(-1);
     }
   }
 
 .preview {
     overflow: auto;
     display:flex;
-    justify-content:space-around;
+    
 }

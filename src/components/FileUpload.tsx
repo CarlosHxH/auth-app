@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import styles from "./FileUpload.module.css"; // Importando o CSS
+import styles from "./FileUpload.module.css";
 
 interface FileData {
   file: File;
@@ -17,25 +17,17 @@ interface FileUploadProps {
   label?: string;
   name: string;
   onChange: (event:{[key: string]: any; }) =>void;
-  multiple?: Boolean
-  //onChange: (base64Files: Base64File[]) => void; // Define o tipo da função onChange
+  multiple?: boolean
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ label, name, onChange, multiple }) => {
   const [files, setFiles] = useState<FileData[]>([]);
   const [base64Files, setBase64Files] = useState<Base64File[]>([]);
 
-  if (base64Files) {
-  }
   // Function to handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.target.files || []);
-    const newFiles: FileData[] = selectedFiles.map((file) => ({
-      file,
-      name: file.name,
-      type: file.type,
-      size: file.size,
-    }));
+    const newFiles: FileData[] = selectedFiles.map((file) => ({file, name: file.name, type: file.type, size: file.size }));
     if(multiple) setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     else setFiles(() => [...newFiles]);
     convertToBase64(newFiles);
@@ -50,11 +42,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ label, name, onChange, multiple
       reader.onloadend = () => {
         setBase64Files((prev) => {
           let updatedBase64Files;
-          if (multiple) {
-            updatedBase64Files = [...prev, { name: file.name, base64: reader.result }];
-          } else {
-            updatedBase64Files = [{ name: file.name, base64: reader.result }];
-          }
+          if (multiple) updatedBase64Files = [...prev, { name: file.name, base64: reader.result }];
+          else updatedBase64Files = [{ name: file.name, base64: reader.result }];
           return updatedBase64Files;
         });
       };
@@ -62,7 +51,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ label, name, onChange, multiple
     });
   };
 
-  // Function to remove a file
+
   const removeFile = (name: string) => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== name));
     setBase64Files((prev) => prev.filter((file) => file.name !== name));
@@ -72,7 +61,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ label, name, onChange, multiple
     <div>
       <label className={styles.fileUploadButton}>
         {label || "Adicionar Arquivo"}
-        <input type="file" {...multiple} onChange={handleFileChange} />
+        <input type="file" multiple={multiple} onChange={handleFileChange} />
       </label>
       <div className={styles.preview}>
         {files.map((file) => (

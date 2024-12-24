@@ -1,18 +1,17 @@
-
+// prisma/seed.js
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcryptjs')
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient();
 
 async function main() {
+    const password = await bcrypt.hash('#5s2024@', 10)
   // Create a user
-  const password = await bcrypt.hash('#5s2024@', 10)
-
   const user = await prisma.user.create({
     data: {
-      email: 'user@example.com',
+      email: 'admin@gmail.com',
       password,
-      name: 'John Doe',
+      name: 'Administrador',
       image: 'https://example.com/image.jpg',
       role: 'admin',
     },
@@ -21,20 +20,19 @@ async function main() {
   console.log('Created user:', user);
 
   // Create a vehicle
-  const vehicle = await prisma.vehicles.create({
+  const vehicle = await prisma.vehicle.create({
     data: {
       make: 'Ford',
       model: 'F-150',
       year: 2020,
       licensePlate: 'ABC1234',
-      userId: user.id, // Associate the vehicle with the user
     },
   });
 
   console.log('Created vehicle:', vehicle);
 
   // Create an inspection
-  const inspection = await prisma.inspections.create({
+  const inspecao = await prisma.inspecao.create({
     data: {
       userId: user.id,
       vehicleId: vehicle.id,
@@ -66,7 +64,7 @@ async function main() {
     },
   });
 
-  console.log('Created inspection:', inspection);
+  console.log('Created inspection:', inspecao);
 }
 
 main()

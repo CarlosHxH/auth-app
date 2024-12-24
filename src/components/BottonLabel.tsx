@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { ToggleButtonGroup, Box, Typography, ToggleButton } from '@mui/material';
-import { styled } from '@mui/system';
+import { color, fontWeight, styled } from '@mui/system';
 
 type OnChangeEvent = {
   [key: string]: any; 
@@ -18,8 +18,11 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   border: '1px solid #ccc',
   borderRadius: '8px',
   padding: '10px 20px',
+  width: '100%',
   '&:hover': {
-    backgroundColor: '#0070f3'
+    backgroundColor: '#999',
+    color: "#fff",
+    fontWeight: 'bolder'
   },
   '&.Mui-selected': {
     backgroundColor: "#0070f3",
@@ -33,9 +36,9 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 
 const BottonLabel: React.FC<Props> = (props) =>
 {
-  const [pos, setPos] = useState<string | null>('');
+  const [pos, setPos] = useState<string | boolean |null>('');
 
-  const handleAlignment = (event: React.MouseEvent<HTMLElement>|React.ChangeEvent, value: string | null) =>
+  const handleAlignment = (event: React.MouseEvent<HTMLElement>|React.ChangeEvent, value: string | boolean | null) =>
   {
     if (value !== null) setPos(value)
     if(props.onChange) {

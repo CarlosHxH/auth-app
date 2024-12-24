@@ -9,6 +9,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { AppProvider } from '@toolpad/core/nextjs';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { Avatar } from '@mui/material';
+import { FireTruck, Person2 } from '@mui/icons-material';
 
 // Move navigation configuration outside component to prevent recreation
 const createNavigation = (): Navigation => [
@@ -23,6 +24,16 @@ const createNavigation = (): Navigation => [
     segment: './dashboard/relatorio',
     title: 'Relatório',
     icon: <BarChartIcon />,
+  },
+  { kind: 'header', title: 'Adicionar' },{
+    segment: './dashboard/user',
+    title: 'Add Usuario',
+    icon: <Person2 />,
+  },
+  {
+    segment: './dashboard/trunck',
+    title: 'Add Carretas',
+    icon: <FireTruck />,
   }
 ];
 
