@@ -14,10 +14,14 @@ interface Base64File {
   base64: string | ArrayBuffer | null;
 }
 interface FileUploadProps {
-  onChange: (base64Files: Base64File[]) => void; // Define o tipo da função onChange
+  label?: string;
+  name: string;
+  onChange: (event:{[key: string]: any; }) =>void;
+  multiple?: Boolean
+  //onChange: (base64Files: Base64File[]) => void; // Define o tipo da função onChange
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ onChange }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ label, name, onChange, multiple }) => {
   const [files, setFiles] = useState<FileData[]>([]);
   const [base64Files, setBase64Files] = useState<Base64File[]>([]);
 
@@ -32,11 +36,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onChange }) => {
       type: file.type,
       size: file.size,
     }));
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    if(multiple) setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    else setFiles(() => [...newFiles]);
     convertToBase64(newFiles);
   };
 
-  React.useEffect(()=>onChange(base64Files),[base64Files])
+  React.useEffect(()=>onChange({[name]: base64Files}),[base64Files])
 
   // Function to convert files to Base64
   const convertToBase64 = (newFiles: FileData[]) => {
@@ -44,11 +49,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onChange }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setBase64Files((prev) => {
-          const updatedBase64Files = [
-            ...prev,
-            { name: file.name, base64: reader.result },
-          ];
-          onChange(updatedBase64Files); // Chama onChange com os arquivos atualizados
+          let updatedBase64Files;
+          if (multiple) {
+            updatedBase64Files = [...prev, { name: file.name, base64: reader.result }];
+          } else {
+            updatedBase64Files = [{ name: file.name, base64: reader.result }];
+          }
           return updatedBase64Files;
         });
       };
@@ -65,8 +71,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onChange }) => {
   return (
     <div>
       <label className={styles.fileUploadButton}>
-        Adicionar Arquivo
-        <input type="file" multiple onChange={handleFileChange} />
+        {label || "Adicionar Arquivo"}
+        <input type="file" {...multiple} onChange={handleFileChange} />
       </label>
       <div className={styles.preview}>
         {files.map((file) => (

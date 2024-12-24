@@ -39,36 +39,23 @@ export const authOptions: NextAuthOptions = {
           // Signup logic
           const existingUser = await prisma.user.findUnique({where: { email: credentials.email }})
 
-          if (existingUser) {
-            throw new Error('User already exists')
-          }
+          if (existingUser) throw new Error('User already exists');
 
           const user = await createUser( credentials.email, credentials.password)
 
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role
-          }
+          return { id: user.id, email: user.email, name: user.name, role: user.role }
         } else {
           // Login logic
-          const user = await prisma.user.findUnique({
-            where: { email: credentials.email }
-          })
-
-          if (!user) {
-            throw new Error('No user found')
-          }
+          const user = await prisma.user.findUnique({where: { email: credentials.email }});
+          
+          if (!user) throw new Error('No user found');
 
           const isValid = await bcrypt.compare(
             credentials.password, 
             user.password || ''
           )
 
-          if (!isValid) {
-            throw new Error('Invalid password')
-          }
+          if (!isValid) throw new Error('Invalid password');
 
           return {
             id: user.id,

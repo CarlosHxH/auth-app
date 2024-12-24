@@ -17,7 +17,7 @@ export const VehicleInspectionSchema = z.object({
   fotosPneusRuim: z.string().optional(),
   pneuFurado: z.string().optional(),
   fotoPneuFurado: z.string().optional(),
-  avariasCabine: z.boolean(),
+  avariasCabine: z.string(),
   descricaoAvariasCabine: z.string().optional(),
   fotosAvariasCabine: z.string().optional(),
   bauPossuiAvarias: z.boolean(),
@@ -30,6 +30,35 @@ export const VehicleInspectionSchema = z.object({
 });
 
 export type VehicleInspectionForm = z.infer<typeof VehicleInspectionSchema>;
+
+export const initialFormState: VehicleInspectionForm = {
+  placa: "",
+  modelo: "",
+  crlvEmDia: false,
+  fotoCRLV: "",
+  certificadoTacografoEmDia: false,
+  fotoTacografo: "",
+  nivelAgua: "",
+  fotoNivelAgua: "",
+  nivelOleo: "",
+  situacaoPneus: "",
+  fotosPneusBom: "",
+  motivoPneuRuim: "",
+  fotosPneusRuim: "",
+  pneuFurado: "",
+  fotoPneuFurado: "",
+  avariasCabine: "",
+  descricaoAvariasCabine: "",
+  fotosAvariasCabine: "",
+  bauPossuiAvarias: false,
+  descricaoAvariasBau: "",
+  fotosAvariasBau: "",
+  funcionamentoParteEletrica: false,
+  motivoParteEletricaRuim: "",
+  fotosParteEletricaRuim: "",
+  sugestao: "",
+};
+
 
 /*export interface VehicleInspectionForm {
     placa: string;
