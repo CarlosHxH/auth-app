@@ -4,16 +4,14 @@ import { prisma } from "@/lib/prisma";
 
 async function VehiclesAndInspections(userId: string) {
   try {
-    const userWithVehiclesAndInspections = await prisma.user.findUnique({
-      where: { id: userId },
+    const inspect = await prisma.inspection.findMany({
+      where: { userId: userId }, // Replace userId with the actual user ID you want to query
       include: {
-        vehicles: true,
-        inspections: true,
+        vehicle: true, // Include the associated vehicle for each inspection
       },
     });
-    console.log({data:userWithVehiclesAndInspections});
-    
-    return userWithVehiclesAndInspections;
+
+    return inspect;
   } catch (error) {
     console.error("Error fetching vehicles and inspections:", error);
   } finally {
@@ -23,16 +21,9 @@ async function VehiclesAndInspections(userId: string) {
 
 export async function GET() {
   try {
-    const userId = "your-user-id-here"; // Replace with the actual user ID
-    VehiclesAndInspections(userId)
-      .then((data) => {
-        console.log("User  Vehicles and Inspections:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    const inspections = await prisma.vehicles.findMany();
-    return NextResponse.json(inspections || { data: [] }, { status: 200 });
+    const userId = "cm52qclx60000hsiov8nc7vra"; // Replace with the actual user ID
+    const data = await VehiclesAndInspections(userId)
+    return NextResponse.json(data, { status: 200 });
     /*
     const session = await getServerSession()
     if(session){

@@ -37,28 +37,19 @@ CREATE TABLE "Session" (
 );
 
 -- CreateTable
-CREATE TABLE "VerificationToken" (
-    "identifier" TEXT NOT NULL,
-    "token" TEXT NOT NULL,
-    "expires" DATETIME NOT NULL
-);
-
--- CreateTable
 CREATE TABLE "Vehicle" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "make" TEXT NOT NULL,
     "model" TEXT NOT NULL,
     "year" INTEGER NOT NULL,
     "licensePlate" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "Vehicle_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "Inspecao" (
+CREATE TABLE "Inspection" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "userId" TEXT NOT NULL,
-    "vehicleId" TEXT NOT NULL,
     "dataInspecao" DATETIME NOT NULL,
     "crlvEmDia" BOOLEAN NOT NULL,
     "fotoCRLV" TEXT,
@@ -83,7 +74,11 @@ CREATE TABLE "Inspecao" (
     "funcionamentoParteEletrica" BOOLEAN NOT NULL,
     "motivoParteEletricaRuim" TEXT,
     "fotosParteEletricaRuim" TEXT,
-    "sugestao" TEXT
+    "sugestao" TEXT,
+    "userId" TEXT NOT NULL,
+    "vehicleId" TEXT NOT NULL,
+    CONSTRAINT "Inspection_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Inspection_vehicleId_fkey" FOREIGN KEY ("vehicleId") REFERENCES "Vehicle" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -94,12 +89,6 @@ CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provi
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
-
--- CreateIndex
-CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
-
--- CreateIndex
-CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Vehicle_licensePlate_key" ON "Vehicle"("licensePlate");

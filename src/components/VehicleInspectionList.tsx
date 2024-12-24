@@ -10,18 +10,23 @@ interface Props {
 }
 interface VehicleInspection {
   id: string;
-  placa: string;
-  modelo: string;
+  licensePlate: string;
+  model: string;
   crlvEmDia: boolean;
   certificadoTacografoEmDia: boolean;
   avariasCabine: boolean;
   bauPossuiAvarias: boolean;
   funcionamentoParteEletrica: boolean;
   dataInspecao: string;
+  vehicle :{
+    licensePlate: string;
+    model: string;
+  }
 }
 
 export default function VehicleInspectionList({inspections, onEdit, onView }: Props) {
-
+  console.log(inspections);
+  
   const getStatusChip = (status: boolean) => (
     <Chip label={status ? "OK" : "Pendente"} color={status ? "success" : "error"} size="small" />
   );
@@ -37,7 +42,7 @@ export default function VehicleInspectionList({inspections, onEdit, onView }: Pr
                   {/* Main Info */}
                   <Grid item xs={12} sm={6}>
                     <Typography variant="h6" gutterBottom>
-                      {inspection.placa} - {inspection.modelo}
+                      {inspection.vehicle.licensePlate} - {inspection.vehicle.model}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Data da Inspeção: {formatDate(inspection.dataInspecao)}
